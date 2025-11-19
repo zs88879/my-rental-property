@@ -838,13 +838,6 @@
         // ===========================================
         async function loadAvailabilityData() {
             try {
-                // If no Google Sheet URL is configured, use sample data
-                if (GOOGLE_SHEET_URL === 'YOUR_GOOGLE_SHEET_CSV_URL_HERE') {
-                    console.log('Using sample data. Configure Google Sheets URL to use real data.');
-                    loadSampleData();
-                    return;
-                }
-
                 const response = await fetch(GOOGLE_SHEET_URL);
                 const csvText = await response.text();
                 parseCSVData(csvText);
