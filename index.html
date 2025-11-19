@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Coastal Retreat | Your Perfect Getaway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,107,107,0.3);
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+        }
+
+        section {
+            padding: 80px 50px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        .highlight {
+            color: #ff6b6b;
+        }
+
+        .property-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .detail-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .detail-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .detail-card h3 {
+            margin-bottom: 10px;
+            color: #ff6b6b;
+        }
+
+        .gallery {
+            background: #f8f9fa;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .amenities {
+            background: white;
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .amenity-item:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .amenity-icon {
+            font-size: 2rem;
+        }
+
+        .reviews {
+            background: #f8f9fa;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .reviewer {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .contact {
+            background: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .booking-bar {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .booking-bar p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 0.9rem;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo">🏖️ Coastal Retreat</div>
+        <ul class="nav-links">
+            <li><a href="#details">Details</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Book Now</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Your Luxury Coastal Escape</h1>
+            <p>Experience paradise in our stunning beachfront property</p>
+            <a href="#contact" class="btn">Book Your Stay</a>
+        </div>
+    </div>
+
+    <div class="booking-bar">
+        <p><span class="price">$299</span> per night</p>
+        <a href="#contact" class="btn" style="background: white; color: #ff6b6b;">Check Availability</a>
+    </div>
+
+    <section id="details">
+        <div class="container">
+            <h2>Property <span class="highlight">Details</span></h2>
+            <div class="property-details">
+                <div class="detail-card">
+                    <div class="detail-icon">🛏️</div>
+                    <h3>3 Bedrooms</h3>
+                    <p>Spacious rooms with premium bedding and stunning views</p>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">🚿</div>
+                    <h3>2.5 Bathrooms</h3>
+                    <p>Modern fixtures and luxury amenities throughout</p>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">👥</div>
+                    <h3>Sleeps 8</h3>
+                    <p>Perfect for families or groups of friends</p>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">📏</div>
+                    <h3>2,400 sq ft</h3>
+                    <p>Plenty of space to relax and unwind</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2>Photo <span class="highlight">Gallery</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600" alt="Living Room">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600" alt="Bedroom">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1556912173-46c336c7fd55?w=600" alt="Kitchen">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600" alt="Bathroom">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600" alt="Patio">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600" alt="Beach View">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="amenities" class="amenities">
+        <div class="container">
+            <h2>Premium <span class="highlight">Amenities</span></h2>
+            <div class="amenities-grid">
+                <div class="amenity-item">
+                    <span class="amenity-icon">📶</span>
+                    <span>High-Speed WiFi</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🏊</span>
+                    <span>Private Pool</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🅿️</span>
+                    <span>Free Parking</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">❄️</span>
+                    <span>Air Conditioning</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🍳</span>
+                    <span>Full Kitchen</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">📺</span>
+                    <span>Smart TV</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🧺</span>
+                    <span>Washer & Dryer</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🌴</span>
+                    <span>Beach Access</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🔥</span>
+                    <span>Fire Pit</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🍖</span>
+                    <span>BBQ Grill</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🐕</span>
+                    <span>Pet Friendly</span>
+                </div>
+                <div class="amenity-item">
+                    <span class="amenity-icon">🎮</span>
+                    <span>Game Room</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+        <div class="container">
+            <h2>Guest <span class="highlight">Reviews</span></h2>
+            <div class="review-grid">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Absolutely stunning property! The views were breathtaking and the home had everything we needed. We can't wait to come back!"</p>
+                    <p class="reviewer">- Sarah M.</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Perfect getaway for our family. The kids loved the pool and we enjoyed relaxing on the deck. Host was very responsive and helpful."</p>
+                    <p class="reviewer">- Michael T.</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"This place exceeded all expectations! Clean, spacious, and the location is unbeatable. Already booked our next stay!"</p>
+                    <p class="reviewer">- Jennifer L.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Book Your <span class="highlight">Stay</span></h2>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" required placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Check-in Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Check-out Date</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" min="1" max="8" required placeholder="1-8 guests">
+                </div>
+                <div class="form-group">
+                    <label>Special Requests</label>
+                    <textarea placeholder="Any special requests or questions?"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Request Booking</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Coastal Retreat. All rights reserved.</p>
+        <p>📧 info@coastalretreat.com | 📞 (555) 123-4567</p>
+    </footer>
+
+    <script>
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for your booking request! We will contact you shortly to confirm your reservation.');
+            e.target.reset();
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Sticky nav background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(255,255,255,0.98)';
+            } else {
+                nav.style.background = 'rgba(255,255,255,0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
