@@ -300,6 +300,171 @@
             background: white;
         }
 
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .calendar-section, .booking-form-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .calendar-section h3, .booking-form-section h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calendar-nav-btn:hover {
+            background: #ff5252;
+        }
+
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #333;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .calendar-day:hover:not(.disabled):not(.booked) {
+            transform: scale(1.05);
+            border-color: #ff6b6b;
+        }
+
+        .calendar-day.disabled {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.booked {
+            background: #ffebee;
+            color: #999;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .calendar-day.selected {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+
+        .calendar-day.in-range {
+            background: #ffe0e0;
+            border-color: #ff6b6b;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .day-price {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .calendar-day.selected .day-price {
+            color: white;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .legend-box {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .legend-box.available {
+            background: white;
+            border: 2px solid #ddd;
+        }
+
+        .legend-box.booked {
+            background: #ffebee;
+            border: 2px solid #ddd;
+        }
+
+        .legend-box.selected {
+            background: #ff6b6b;
+        }
+
+        #booking-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid #ff6b6b;
+        }
+
+        #booking-summary h4 {
+            margin-bottom: 15px;
+            color: #ff6b6b;
+        }
+
+        #booking-summary p {
+            margin: 10px 0;
+        }
+
+        #total-price {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
         .contact-form {
             max-width: 600px;
             margin: 40px auto;
@@ -388,6 +553,10 @@
 
             h2 {
                 font-size: 2rem;
+            }
+
+            .booking-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -556,8 +725,8 @@
             <h2>Perfect <span class="highlight">Location</span></h2>
             <div class="location-info">
                 <div class="location-text">
-                    <h3>📍 Mississauga, Ontario</h3>
-                    <p>Our property is located in Mississauga (ZIP: L5V XXX).</p>
+                    <h3>📍 Malibu Area, California</h3>
+                    <p>Our property is located in the beautiful coastal area of Malibu (ZIP: 902XX). Enjoy pristine beaches, world-class dining, and stunning natural beauty.</p>
                     <div class="nearby-attractions">
                         <h4>Nearby Attractions:</h4>
                         <ul>
@@ -572,7 +741,7 @@
                 </div>
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5778.302331007166!2d-79.70816982316919!3d43.60339405564983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b405aa5af752b%3A0xe8b15cbf63e22615!2sPeel%20Regional%20Rd%203%20%26%20Douguy%20Blvd%2C%20Mississauga%2C%20ON%20L5V%201N2!5e0!3m2!1sen!2sca!4v1763515459867!5m2!1sen!2sca"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106118.60831419257!2d-118.87562383476562!3d34.03508590000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80e81da9f908d63f%3A0x93b72d71b2ea8c5a!2sMalibu%2C%20CA!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
                         width="100%" 
                         height="450" 
                         style="border:0; border-radius: 15px;" 
@@ -587,38 +756,58 @@
 
     <section id="contact" class="contact">
         <div class="container">
-            <h2>Book Your <span class="highlight">Stay</span></h2>
-            <form class="contact-form" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" required placeholder="Your full name">
+            <h2>Check Availability & <span class="highlight">Book</span></h2>
+            
+            <div class="booking-container">
+                <div class="calendar-section">
+                    <h3>Select Your Dates</h3>
+                    <div id="calendar-controls">
+                        <button onclick="previousMonth()" class="calendar-nav-btn">← Previous</button>
+                        <h4 id="calendar-month"></h4>
+                        <button onclick="nextMonth()" class="calendar-nav-btn">Next →</button>
+                    </div>
+                    <div id="calendar"></div>
+                    <div class="calendar-legend">
+                        <div><span class="legend-box available"></span> Available</div>
+                        <div><span class="legend-box booked"></span> Booked</div>
+                        <div><span class="legend-box selected"></span> Selected</div>
+                    </div>
+                    <div id="booking-summary" style="display: none;">
+                        <h4>Booking Summary</h4>
+                        <p><strong>Check-in:</strong> <span id="checkin-date"></span></p>
+                        <p><strong>Check-out:</strong> <span id="checkout-date"></span></p>
+                        <p><strong>Nights:</strong> <span id="num-nights"></span></p>
+                        <p><strong>Total Price:</strong> <span id="total-price"></span></p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" required placeholder="your@email.com">
+
+                <div class="booking-form-section">
+                    <h3>Request Your Booking</h3>
+                    <form class="contact-form" onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="guest-name" required placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="guest-email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="guest-phone" required placeholder="(555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Guests</label>
+                            <input type="number" id="num-guests" min="1" max="8" required placeholder="1-8 guests">
+                        </div>
+                        <div class="form-group">
+                            <label>Special Requests</label>
+                            <textarea id="special-requests" placeholder="Any special requests or questions?"></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Request Booking</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" required placeholder="(555) 123-4567">
-                </div>
-                <div class="form-group">
-                    <label>Check-in Date</label>
-                    <input type="date" required>
-                </div>
-                <div class="form-group">
-                    <label>Check-out Date</label>
-                    <input type="date" required>
-                </div>
-                <div class="form-group">
-                    <label>Number of Guests</label>
-                    <input type="number" min="1" max="8" required placeholder="1-8 guests">
-                </div>
-                <div class="form-group">
-                    <label>Special Requests</label>
-                    <textarea placeholder="Any special requests or questions?"></textarea>
-                </div>
-                <button type="submit" class="btn" style="width: 100%;">Request Booking</button>
-            </form>
+            </div>
         </div>
     </section>
 
@@ -628,13 +817,275 @@
     </footer>
 
     <script>
-        function handleSubmit(e) {
-            e.preventDefault();
-            alert('Thank you for your booking request! We will contact you shortly to confirm your reservation.');
-            e.target.reset();
+        // ===========================================
+        // GOOGLE SHEETS CONFIGURATION
+        // ===========================================
+        // Replace this with your Google Sheets CSV export URL
+        // Instructions: See below on how to get this URL
+        const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1YEwBmG5pDFDYLDSNs6eyyM3O7YBjYpGoMEfALsInGzg/edit?usp=sharing';
+        
+        // ===========================================
+        // CALENDAR DATA & STATE
+        // ===========================================
+        let availabilityData = {};
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let selectedCheckIn = null;
+        let selectedCheckOut = null;
+
+        // ===========================================
+        // LOAD DATA FROM GOOGLE SHEETS
+        // ===========================================
+        async function loadAvailabilityData() {
+            try {
+                // If no Google Sheet URL is configured, use sample data
+                if (GOOGLE_SHEET_URL === 'YOUR_GOOGLE_SHEET_CSV_URL_HERE') {
+                    console.log('Using sample data. Configure Google Sheets URL to use real data.');
+                    loadSampleData();
+                    return;
+                }
+
+                const response = await fetch(GOOGLE_SHEET_URL);
+                const csvText = await response.text();
+                parseCSVData(csvText);
+                renderCalendar();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                loadSampleData(); // Fallback to sample data
+            }
         }
 
-        // Smooth scrolling
+        function parseCSVData(csvText) {
+            const lines = csvText.split('\n');
+            // Skip header row
+            for (let i = 1; i < lines.length; i++) {
+                const [dateStr, available, price] = lines[i].split(',');
+                if (dateStr) {
+                    availabilityData[dateStr.trim()] = {
+                        available: available.trim().toLowerCase() === 'yes',
+                        price: parseFloat(price) || 299
+                    };
+                }
+            }
+        }
+
+        function loadSampleData() {
+            // Generate sample data for next 90 days
+            const today = new Date();
+            for (let i = 0; i < 90; i++) {
+                const date = new Date(today);
+                date.setDate(date.getDate() + i);
+                const dateStr = formatDate(date);
+                
+                // Make some random dates unavailable for demo
+                const isAvailable = Math.random() > 0.2; // 80% available
+                const basePrice = 299;
+                const weekendMultiplier = (date.getDay() === 5 || date.getDay() === 6) ? 1.3 : 1;
+                
+                availabilityData[dateStr] = {
+                    available: isAvailable,
+                    price: Math.round(basePrice * weekendMultiplier)
+                };
+            }
+            renderCalendar();
+        }
+
+        // ===========================================
+        // CALENDAR RENDERING
+        // ===========================================
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthHeader = document.getElementById('calendar-month');
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            monthHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            // Clear calendar
+            calendar.innerHTML = '';
+            
+            // Add day headers
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                calendar.appendChild(emptyCell);
+            }
+            
+            // Add days of month
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dateStr = formatDate(date);
+                const dayData = availabilityData[dateStr] || { available: true, price: 299 };
+                
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                
+                // Check if date is in the past
+                if (date < today) {
+                    dayCell.classList.add('disabled');
+                } else if (!dayData.available) {
+                    dayCell.classList.add('booked');
+                }
+                
+                // Check if date is selected
+                if (selectedCheckIn && dateStr === formatDate(selectedCheckIn)) {
+                    dayCell.classList.add('selected');
+                }
+                if (selectedCheckOut && dateStr === formatDate(selectedCheckOut)) {
+                    dayCell.classList.add('selected');
+                }
+                
+                // Check if date is in range
+                if (selectedCheckIn && selectedCheckOut) {
+                    if (date > selectedCheckIn && date < selectedCheckOut) {
+                        dayCell.classList.add('in-range');
+                    }
+                }
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = day;
+                
+                const dayPrice = document.createElement('div');
+                dayPrice.className = 'day-price';
+                dayPrice.textContent = dayData.available ? `${dayData.price}` : 'Booked';
+                
+                dayCell.appendChild(dayNumber);
+                dayCell.appendChild(dayPrice);
+                
+                if (date >= today && dayData.available) {
+                    dayCell.onclick = () => selectDate(date);
+                }
+                
+                calendar.appendChild(dayCell);
+            }
+        }
+
+        function selectDate(date) {
+            if (!selectedCheckIn || (selectedCheckIn && selectedCheckOut)) {
+                // Starting new selection
+                selectedCheckIn = date;
+                selectedCheckOut = null;
+            } else if (date > selectedCheckIn) {
+                // Selecting check-out
+                selectedCheckOut = date;
+                updateBookingSummary();
+            } else {
+                // Selected date is before check-in, restart
+                selectedCheckIn = date;
+                selectedCheckOut = null;
+            }
+            
+            renderCalendar();
+        }
+
+        function updateBookingSummary() {
+            const summary = document.getElementById('booking-summary');
+            
+            if (selectedCheckIn && selectedCheckOut) {
+                summary.style.display = 'block';
+                
+                document.getElementById('checkin-date').textContent = selectedCheckIn.toLocaleDateString();
+                document.getElementById('checkout-date').textContent = selectedCheckOut.toLocaleDateString();
+                
+                // Calculate nights and total price
+                const nights = Math.ceil((selectedCheckOut - selectedCheckIn) / (1000 * 60 * 60 * 24));
+                let totalPrice = 0;
+                
+                for (let i = 0; i < nights; i++) {
+                    const date = new Date(selectedCheckIn);
+                    date.setDate(date.getDate() + i);
+                    const dateStr = formatDate(date);
+                    const dayData = availabilityData[dateStr] || { price: 299 };
+                    totalPrice += dayData.price;
+                }
+                
+                document.getElementById('num-nights').textContent = nights;
+                document.getElementById('total-price').textContent = `${totalPrice.toLocaleString()}`;
+            } else {
+                summary.style.display = 'none';
+            }
+        }
+
+        function previousMonth() {
+            if (currentMonth === 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else {
+                currentMonth--;
+            }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            if (currentMonth === 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else {
+                currentMonth++;
+            }
+            renderCalendar();
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // ===========================================
+        // FORM SUBMISSION
+        // ===========================================
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            if (!selectedCheckIn || !selectedCheckOut) {
+                alert('Please select check-in and check-out dates from the calendar.');
+                return;
+            }
+            
+            const formData = {
+                name: document.getElementById('guest-name').value,
+                email: document.getElementById('guest-email').value,
+                phone: document.getElementById('guest-phone').value,
+                guests: document.getElementById('num-guests').value,
+                checkIn: selectedCheckIn.toLocaleDateString(),
+                checkOut: selectedCheckOut.toLocaleDateString(),
+                specialRequests: document.getElementById('special-requests').value,
+                totalPrice: document.getElementById('total-price').textContent
+            };
+            
+            console.log('Booking request:', formData);
+            alert(`Thank you ${formData.name}! Your booking request for ${formData.checkIn} to ${formData.checkOut} has been received. We will contact you shortly to confirm your reservation.`);
+            
+            // Reset form and selection
+            e.target.reset();
+            selectedCheckIn = null;
+            selectedCheckOut = null;
+            renderCalendar();
+            document.getElementById('booking-summary').style.display = 'none';
+        }
+
+        // ===========================================
+        // SMOOTH SCROLLING
+        // ===========================================
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -654,6 +1105,11 @@
                 nav.style.background = 'rgba(255,255,255,0.95)';
             }
         });
+
+        // ===========================================
+        // INITIALIZE ON PAGE LOAD
+        // ===========================================
+        window.addEventListener('load', loadAvailabilityData);
     </script>
 </body>
 </html>
