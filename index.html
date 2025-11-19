@@ -1019,8 +1019,11 @@
                     const date = new Date(selectedCheckIn);
                     date.setDate(date.getDate() + i);
                     const dateStr = formatDate(date);
-                    const dayData = availabilityData[dateStr] || { price: 299 };
-                    totalPrice += dayData.price;
+                    const dayData = availabilityData[dateStr];
+                    
+                    if (dayData && dayData.price) {
+                        totalPrice += dayData.price;
+                    }
                 }
                 
                 document.getElementById('num-nights').textContent = nights;
