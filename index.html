@@ -838,13 +838,27 @@
         // ===========================================
         async function loadAvailabilityData() {
             try {
-                const response = await fetch(GOOGLE_SHEET_URL);
+                // Try direct fetch first
+                let response = await fetch(GOOGLE_SHEET_URL);
+                
+                // If direct fetch fails due to CORS, try with proxy
+                if (!response.ok) {
+                    console.log('Direct fetch failed, trying with CORS proxy...');
+                    response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(GOOGLE_SHEET_URL)}`);
+                }
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                
                 const csvText = await response.text();
+                console.log('CSV data loaded successfully');
                 parseCSVData(csvText);
                 renderCalendar();
             } catch (error) {
-                console.error('Error loading data:', error);
-                loadSampleData(); // Fallback to sample data
+                console.error('Error loading data from Google Sheets:', error);
+                console.log('Falling back to sample data');
+                loadSampleData();
             }
         }
 
