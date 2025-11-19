@@ -837,48 +837,59 @@
         // LOAD DATA FROM GOOGLE SHEETS
         // ===========================================
         async function loadAvailabilityData() {
+            console.log('Starting to load data from Google Sheets...');
+            console.log('URL:', GOOGLE_SHEET_URL);
+            
             try {
-                // Try direct fetch first
-                let response = await fetch(GOOGLE_SHEET_URL);
+                // Use CORS proxy to fetch the data
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
+                console.log('Fetching via proxy:', proxyUrl);
                 
-                // If direct fetch fails due to CORS, try with proxy
-                if (!response.ok) {
-                    console.log('Direct fetch failed, trying with CORS proxy...');
-                    response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(GOOGLE_SHEET_URL)}`);
-                }
+                const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch data');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const csvText = await response.text();
-                console.log('CSV data loaded successfully');
+                console.log('CSV data received:', csvText.substring(0, 200)); // Show first 200 chars
                 parseCSVData(csvText);
                 renderCalendar();
             } catch (error) {
                 console.error('Error loading data from Google Sheets:', error);
-                console.log('Falling back to sample data');
+                console.log('Falling back to empty data');
                 loadSampleData();
             }
         }
 
         function parseCSVData(csvText) {
             availabilityData = {}; // Clear any existing data
+            console.log('Parsing CSV data...');
+            
             const lines = csvText.split('\n');
+            console.log('Total lines:', lines.length);
+            
             // Skip header row
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue; // Skip empty lines
                 
-                const [dateStr, available, price] = line.split(',');
-                if (dateStr && dateStr.trim()) {
-                    availabilityData[dateStr.trim()] = {
-                        available: available.trim().toLowerCase() === 'yes',
+                const parts = line.split(',');
+                const dateStr = parts[0] ? parts[0].trim() : '';
+                const available = parts[1] ? parts[1].trim() : '';
+                const price = parts[2] ? parts[2].trim() : '';
+                
+                console.log(`Line ${i}: Date="${dateStr}", Available="${available}", Price="${price}"`);
+                
+                if (dateStr) {
+                    availabilityData[dateStr] = {
+                        available: available.toLowerCase() === 'yes',
                         price: parseFloat(price) || 0
                     };
                 }
             }
-            console.log('Loaded ' + Object.keys(availabilityData).length + ' dates from Google Sheet');
+            console.log('✅ Loaded ' + Object.keys(availabilityData).length + ' dates from Google Sheet');
+            console.log('Availability data:', availabilityData);
         }
 
         function loadSampleData() {
