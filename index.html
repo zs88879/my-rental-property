@@ -803,9 +803,9 @@
                     <h3>Select Your Dates</h3>
                     <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">📅 Bookings available up to 3 months from today</p>
                     <div id="calendar-controls">
-                        <button id="prev-btn" class="calendar-nav-btn">← Previous</button>
+                        <button class="calendar-nav-btn" onclick="window.calendarApp.previousMonth()">← Previous</button>
                         <h4 id="calendar-month"></h4>
-                        <button id="next-btn" class="calendar-nav-btn">Next →</button>
+                        <button class="calendar-nav-btn" onclick="window.calendarApp.nextMonth()">Next →</button>
                     </div>
                     <div id="calendar"></div>
                     <div class="calendar-legend">
@@ -836,7 +836,7 @@
 
                 <div class="booking-form-section">
                     <h3>Request Your Booking</h3>
-                    <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <form class="contact-form" onsubmit="window.calendarApp.handleSubmit(event)">
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" id="guest-name" required placeholder="Your full name">
