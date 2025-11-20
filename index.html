@@ -368,7 +368,7 @@
             background: white;
         }
 
-        .calendar-day:hover:not(.disabled):not(.booked):not(.out-of-range) {
+        .calendar-day:hover:not(.disabled):not(.booked) {
             transform: scale(1.05);
             border-color: #ff6b6b;
         }
@@ -384,12 +384,6 @@
             color: #999;
             cursor: not-allowed;
             text-decoration: line-through;
-        }
-
-        .calendar-day.out-of-range {
-            background: #f0f0f0;
-            color: #999;
-            cursor: not-allowed;
         }
 
         .calendar-day.selected {
@@ -423,7 +417,6 @@
             justify-content: center;
             margin-top: 15px;
             font-size: 0.9rem;
-            flex-wrap: wrap;
         }
 
         .legend-box {
@@ -449,11 +442,6 @@
             background: #ff6b6b;
         }
 
-        .legend-box.out-of-range {
-            background: #f0f0f0;
-            border: 2px solid #ddd;
-        }
-
         #booking-summary {
             background: white;
             padding: 20px;
@@ -471,31 +459,8 @@
             margin: 10px 0;
         }
 
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .price-row.total {
-            border-bottom: 2px solid #ff6b6b;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .discount-badge {
-            display: inline-block;
-            background: #4caf50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            margin-left: 10px;
-        }
-
         #total-price {
+            font-size: 1.5rem;
             color: #ff6b6b;
             font-weight: bold;
         }
@@ -592,11 +557,6 @@
 
             .booking-container {
                 grid-template-columns: 1fr;
-            }
-
-            .calendar-legend {
-                flex-direction: column;
-                gap: 10px;
             }
         }
     </style>
@@ -801,42 +761,29 @@
             <div class="booking-container">
                 <div class="calendar-section">
                     <h3>Select Your Dates</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">📅 Bookings available up to 3 months from today</p>
                     <div id="calendar-controls">
-                        <button class="calendar-nav-btn" onclick="window.calendarApp.previousMonth()">← Previous</button>
+                        <button onclick="previousMonth()" class="calendar-nav-btn">← Previous</button>
                         <h4 id="calendar-month"></h4>
-                        <button class="calendar-nav-btn" onclick="window.calendarApp.nextMonth()">Next →</button>
+                        <button onclick="nextMonth()" class="calendar-nav-btn">Next →</button>
                     </div>
                     <div id="calendar"></div>
                     <div class="calendar-legend">
                         <div><span class="legend-box available"></span> Available</div>
                         <div><span class="legend-box booked"></span> Booked</div>
                         <div><span class="legend-box selected"></span> Selected</div>
-                        <div><span class="legend-box out-of-range"></span> Beyond 3 months</div>
                     </div>
                     <div id="booking-summary" style="display: none;">
                         <h4>Booking Summary</h4>
                         <p><strong>Check-in:</strong> <span id="checkin-date"></span></p>
                         <p><strong>Check-out:</strong> <span id="checkout-date"></span></p>
                         <p><strong>Nights:</strong> <span id="num-nights"></span></p>
-                        <div class="price-row">
-                            <span>Subtotal ($<span id="nightly-rate">299</span>/night):</span>
-                            <span id="subtotal-price">$0</span>
-                        </div>
-                        <div id="discount-row" class="price-row" style="display: none;">
-                            <span>Discount (<span id="discount-percent">0</span>%):</span>
-                            <span id="discount-amount" style="color: #4caf50;">-$0</span>
-                        </div>
-                        <div class="price-row total">
-                            <span>Total Price:</span>
-                            <span id="total-price">$0</span>
-                        </div>
+                        <p><strong>Total Price:</strong> <span id="total-price"></span></p>
                     </div>
                 </div>
 
                 <div class="booking-form-section">
                     <h3>Request Your Booking</h3>
-                    <form class="contact-form" onsubmit="window.calendarApp.handleSubmit(event)">
+                    <form class="contact-form" onsubmit="handleSubmit(event)">
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" id="guest-name" required placeholder="Your full name">
@@ -870,11 +817,19 @@
     </footer>
 
     <script>
-        console.log('Script version 3.1 loaded - with discounts and 3-month limit');
+        // VERSION 2.0 - Force browser to reload this script
+        console.log('Script version 2.0 loaded');
         
+        // ===========================================
+        // GOOGLE SHEETS CONFIGURATION
+        // ===========================================
+        // Replace this with your Google Sheets CSV export URL
+        // Instructions: See below on how to get this URL
         const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQrRbWKrKBZ9HZThn3O0ns8DvJinCBtL7ICXglk5FvvAWcQv1xVf551hrq2UVC_4cB7Ifq9pn2E9XsQ/pub?gid=0&single=true&output=csv';
-        const BOOKING_LIMIT_DAYS = 90;
         
+        // ===========================================
+        // CALENDAR DATA & STATE
+        // ===========================================
         let availabilityData = {};
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
@@ -885,49 +840,66 @@
         // LOAD DATA FROM GOOGLE SHEETS
         // ===========================================
         async function loadAvailabilityData() {
-            console.log('✅ loadAvailabilityData() called');
-            loadSampleData();
+            console.log('Starting to load data from Google Sheets...');
+            console.log('URL:', GOOGLE_SHEET_URL);
+            
+            try {
+                // Use CORS proxy to fetch the data
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
+                console.log('Fetching via proxy:', proxyUrl);
+                
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                console.log('CSV data received:', csvText.substring(0, 200)); // Show first 200 chars
+                parseCSVData(csvText);
+                renderCalendar();
+            } catch (error) {
+                console.error('Error loading data from Google Sheets:', error);
+                console.log('Falling back to empty data');
+                loadSampleData();
+            }
         }
 
         function parseCSVData(csvText) {
-            availabilityData = {};
-            const lines = csvText.split('\n');
+            availabilityData = {}; // Clear any existing data
+            console.log('Parsing CSV data...');
             
+            const lines = csvText.split('\n');
+            console.log('Total lines:', lines.length);
+            
+            // Skip header row
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
-                if (!line) continue;
+                if (!line) continue; // Skip empty lines
                 
                 const parts = line.split(',');
                 const dateStr = parts[0] ? parts[0].trim() : '';
                 const available = parts[1] ? parts[1].trim() : '';
                 const price = parts[2] ? parts[2].trim() : '';
                 
+                console.log(`Line ${i}: Date="${dateStr}", Available="${available}", Price="${price}"`);
+                
                 if (dateStr) {
                     availabilityData[dateStr] = {
                         available: available.toLowerCase() === 'yes',
-                        price: parseFloat(price) || 299
+                        price: parseFloat(price) || 0
                     };
                 }
             }
             console.log('✅ Loaded ' + Object.keys(availabilityData).length + ' dates from Google Sheet');
+            console.log('Availability data:', availabilityData);
         }
 
         function loadSampleData() {
+            // This function is only used as a fallback if Google Sheets fails to load
             availabilityData = {};
-            console.log('Using sample data');
+            console.log('Using empty data - all dates will be unavailable');
             renderCalendar();
-        }
-
-        // ===========================================
-        // CALCULATE DISCOUNT
-        // ===========================================
-        function calculateDiscount(nights) {
-            if (nights > 30) {
-                return 0.15; // 15% discount for more than 1 month
-            } else if (nights > 7) {
-                return 0.08; // 8% discount for more than 7 days
-            }
-            return 0; // No discount
         }
 
         // ===========================================
@@ -942,8 +914,10 @@
             
             monthHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
             
+            // Clear calendar
             calendar.innerHTML = '';
             
+            // Add day headers
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             days.forEach(day => {
                 const header = document.createElement('div');
@@ -952,20 +926,19 @@
                 calendar.appendChild(header);
             });
             
+            // Get first day of month and number of days
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
             
+            // Add empty cells for days before month starts
             for (let i = 0; i < firstDay; i++) {
                 const emptyCell = document.createElement('div');
                 calendar.appendChild(emptyCell);
             }
             
+            // Add days of month
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            
-            // Calculate the cutoff date (90 days from today)
-            const cutoffDate = new Date(today);
-            cutoffDate.setDate(cutoffDate.getDate() + BOOKING_LIMIT_DAYS);
             
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
@@ -978,13 +951,7 @@
                 // Check if date is in the past
                 if (date < today) {
                     dayCell.classList.add('disabled');
-                } 
-                // Check if date is beyond 3 months
-                else if (date > cutoffDate) {
-                    dayCell.classList.add('out-of-range');
-                } 
-                // Check if date is booked
-                else if (!dayData.available) {
+                } else if (!dayData.available) {
                     dayCell.classList.add('booked');
                 }
                 
@@ -1014,8 +981,7 @@
                 dayCell.appendChild(dayNumber);
                 dayCell.appendChild(dayPrice);
                 
-                // Only allow clicking if date is available, not in past, and within 3 months
-                if (date >= today && date <= cutoffDate && dayData.available) {
+                if (date >= today && dayData.available) {
                     dayCell.onclick = () => selectDate(date);
                 }
                 
@@ -1025,12 +991,15 @@
 
         function selectDate(date) {
             if (!selectedCheckIn || (selectedCheckIn && selectedCheckOut)) {
+                // Starting new selection
                 selectedCheckIn = date;
                 selectedCheckOut = null;
             } else if (date > selectedCheckIn) {
+                // Selecting check-out
                 selectedCheckOut = date;
                 updateBookingSummary();
             } else {
+                // Selected date is before check-in, restart
                 selectedCheckIn = date;
                 selectedCheckOut = null;
             }
@@ -1047,8 +1016,9 @@
                 document.getElementById('checkin-date').textContent = selectedCheckIn.toLocaleDateString();
                 document.getElementById('checkout-date').textContent = selectedCheckOut.toLocaleDateString();
                 
+                // Calculate nights and total price
                 const nights = Math.ceil((selectedCheckOut - selectedCheckIn) / (1000 * 60 * 60 * 24));
-                let subtotal = 0;
+                let totalPrice = 0;
                 
                 for (let i = 0; i < nights; i++) {
                     const date = new Date(selectedCheckIn);
@@ -1057,29 +1027,12 @@
                     const dayData = availabilityData[dateStr];
                     
                     if (dayData && dayData.price) {
-                        subtotal += dayData.price;
-                    } else {
-                        subtotal += 299;
+                        totalPrice += dayData.price;
                     }
                 }
                 
-                // Calculate discount
-                const discountRate = calculateDiscount(nights);
-                const discountAmount = subtotal * discountRate;
-                const totalPrice = subtotal - discountAmount;
-                
                 document.getElementById('num-nights').textContent = nights;
-                document.getElementById('subtotal-price').textContent = `${subtotal.toLocaleString()}`;
                 document.getElementById('total-price').textContent = `${totalPrice.toLocaleString()}`;
-                
-                const discountRow = document.getElementById('discount-row');
-                if (discountRate > 0) {
-                    discountRow.style.display = 'flex';
-                    document.getElementById('discount-percent').textContent = Math.round(discountRate * 100);
-                    document.getElementById('discount-amount').textContent = `-${discountAmount.toLocaleString()}`;
-                } else {
-                    discountRow.style.display = 'none';
-                }
             } else {
                 summary.style.display = 'none';
             }
@@ -1123,10 +1076,6 @@
                 return;
             }
             
-            const nights = Math.ceil((selectedCheckOut - selectedCheckIn) / (1000 * 60 * 60 * 24));
-            const discountRate = calculateDiscount(nights);
-            const discountPercent = Math.round(discountRate * 100);
-            
             const formData = {
                 name: document.getElementById('guest-name').value,
                 email: document.getElementById('guest-email').value,
@@ -1134,21 +1083,14 @@
                 guests: document.getElementById('num-guests').value,
                 checkIn: selectedCheckIn.toLocaleDateString(),
                 checkOut: selectedCheckOut.toLocaleDateString(),
-                nights: nights,
-                discount: discountPercent > 0 ? `${discountPercent}%` : 'None',
-                totalPrice: document.getElementById('total-price').textContent,
-                specialRequests: document.getElementById('special-requests').value
+                specialRequests: document.getElementById('special-requests').value,
+                totalPrice: document.getElementById('total-price').textContent
             };
             
             console.log('Booking request:', formData);
+            alert(`Thank you ${formData.name}! Your booking request for ${formData.checkIn} to ${formData.checkOut} has been received. We will contact you shortly to confirm your reservation.`);
             
-            let discountMessage = '';
-            if (discountPercent > 0) {
-                discountMessage = ` You received a ${discountPercent}% discount!`;
-            }
-            
-            alert(`Thank you ${formData.name}! Your booking request for ${formData.checkIn} to ${formData.checkOut} (${nights} nights) has been received.${discountMessage}\n\nTotal: ${formData.totalPrice}\n\nWe will contact you shortly to confirm your reservation.`);
-            
+            // Reset form and selection
             e.target.reset();
             selectedCheckIn = null;
             selectedCheckOut = null;
@@ -1169,6 +1111,7 @@
             });
         });
 
+        // Sticky nav background on scroll
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('.nav');
             if (window.scrollY > 100) {
@@ -1181,14 +1124,7 @@
         // ===========================================
         // INITIALIZE ON PAGE LOAD
         // ===========================================
-        window.addEventListener('load', () => {
-            console.log('Page loaded, initializing calendar...');
-            loadAvailabilityData();
-        });
-        
-        // Also initialize immediately in case load event already fired
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadAvailabilityData);
-        } else {
-            loadAvailabilityData();
-        }
+        window.addEventListener('load', loadAvailabilityData);
+    </script>
+</body>
+</html>
