@@ -886,25 +886,7 @@
         // ===========================================
         async function loadAvailabilityData() {
             console.log('✅ loadAvailabilityData() called');
-            
-            try {
-                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
-                console.log('Fetching from proxy...');
-                const response = await fetch(proxyUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const csvText = await response.text();
-                console.log('CSV received, parsing...');
-                parseCSVData(csvText);
-                renderCalendar();
-            } catch (error) {
-                console.error('❌ Error loading Google Sheets:', error);
-                console.log('Loading sample data instead...');
-                loadSampleData();
-            }
+            loadSampleData();
         }
 
         function parseCSVData(csvText) {
