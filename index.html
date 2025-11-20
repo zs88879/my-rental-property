@@ -930,6 +930,7 @@
 
         function loadSampleData() {
             availabilityData = {};
+            console.log('Using sample data');
             renderCalendar();
         }
 
@@ -1196,4 +1197,14 @@
         // ===========================================
         // INITIALIZE ON PAGE LOAD
         // ===========================================
-        window.addEventListener('load', loadAvailabilityData);
+        window.addEventListener('load', () => {
+            console.log('Page loaded, initializing calendar...');
+            loadAvailabilityData();
+        });
+        
+        // Also initialize immediately in case load event already fired
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadAvailabilityData);
+        } else {
+            loadAvailabilityData();
+        }
