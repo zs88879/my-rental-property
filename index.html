@@ -870,26 +870,26 @@
     </footer>
 
     <script>
-        console.log('Script version 3.0 loaded - with discounts and 3-month limit');
+        console.log('Script version 3.1 loaded - with discounts and 3-month limit');
         
         const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQrRbWKrKBZ9HZThn3O0ns8DvJinCBtL7ICXglk5FvvAWcQv1xVf551hrq2UVC_4cB7Ifq9pn2E9XsQ/pub?gid=0&single=true&output=csv';
+        const BOOKING_LIMIT_DAYS = 90;
         
         let availabilityData = {};
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedCheckIn = null;
         let selectedCheckOut = null;
-        
-        const BOOKING_LIMIT_DAYS = 90; // 3 months
 
         // ===========================================
         // LOAD DATA FROM GOOGLE SHEETS
         // ===========================================
         async function loadAvailabilityData() {
-            console.log('Starting to load data from Google Sheets...');
+            console.log('✅ loadAvailabilityData() called');
             
             try {
                 const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
+                console.log('Fetching from proxy...');
                 const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
@@ -897,10 +897,12 @@
                 }
                 
                 const csvText = await response.text();
+                console.log('CSV received, parsing...');
                 parseCSVData(csvText);
                 renderCalendar();
             } catch (error) {
-                console.error('Error loading data from Google Sheets:', error);
+                console.error('❌ Error loading Google Sheets:', error);
+                console.log('Loading sample data instead...');
                 loadSampleData();
             }
         }
