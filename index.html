@@ -943,7 +943,7 @@
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
                 const dateStr = formatDate(date);
-                const dayData = availabilityData[dateStr] || { available: true, price: 299 };
+                const dayData = availabilityData[dateStr] || checkCustomAvailability(date) || { available: true, price: 299 };
                 
                 const dayCell = document.createElement('div');
                 dayCell.className = 'calendar-day';
@@ -989,6 +989,13 @@
                 
                 calendar.appendChild(dayCell);
             }
+        }
+
+        function checkCustomAvailability(date) {
+            if (isMoreThan3MonthsFromToday(date)) {
+                return { available: false, price: 0 };
+            }
+            return null; // Falls through to next condition
         }
 
         function isMoreThan3MonthsFromToday(selectedDate) {
