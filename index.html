@@ -1056,10 +1056,10 @@
                 }
 
                 if (nights >= 30) {
-                    totalPrice = round(totalPrice * 0.80);
+                    totalPrice = Math.round(totalPrice * 0.80);
                     document.getElementById('discount-rate').textContent = "20% <monthly>";
                 } else if (nights >= 7) {
-                    totalPrice = round(totalPrice * 0.90);
+                    totalPrice = Math.round(totalPrice * 0.90);
                     document.getElementById('discount-rate').textContent = "10% <weekly>";
                 } else {
                     document.getElementById('discount-rate').textContent = "N/A <less than 7 nights>";
