@@ -777,6 +777,7 @@
                         <p><strong>Check-in:</strong> <span id="checkin-date"></span></p>
                         <p><strong>Check-out:</strong> <span id="checkout-date"></span></p>
                         <p><strong>Nights:</strong> <span id="num-nights"></span></p>
+                        <p><strong>Discount-Rate:</strong> <span id="discount-rate"></span></p>
                         <p><strong>Total Price:</strong> <span id="total-price"></span></p>
                     </div>
                 </div>
@@ -1053,6 +1054,16 @@
                         totalPrice += dayData.price;
                     }
                 }
+
+                if (nights >= 30) {
+                    totalPrice = round(totalPrice * 0.80);
+                    document.getElementById('discount-rate').textContent = "20% <monthly>";
+                } else if (nights >= 7) {
+                    totalPrice = round(totalPrice * 0.90);
+                    document.getElementById('discount-rate').textContent = "10% <weekly>";
+                } else {
+                    document.getElementById('discount-rate').textContent = "N/A <less than 7 nights>";
+                }                    
                 
                 document.getElementById('num-nights').textContent = nights;
                 document.getElementById('total-price').textContent = `${totalPrice.toLocaleString()}`;
