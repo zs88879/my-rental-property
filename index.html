@@ -969,7 +969,7 @@
                 if (selectedCheckIn && selectedCheckOut) {
                     if (date > selectedCheckIn && date < selectedCheckOut) {
                         if (!dayData.available) {
-                            alert("booked");
+                            alert(dateStr + " is not available, please choose different start and end dates");
                             selectedCheckIn = null;
                             selectedCheckOut = null;
                             updateBookingSummary();
