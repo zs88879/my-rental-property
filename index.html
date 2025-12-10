@@ -968,9 +968,10 @@
                 // Check if date is in range
                 if (selectedCheckIn && selectedCheckOut) {
                     if (date > selectedCheckIn && date < selectedCheckOut) {
-                        if (!dayDate.available) {
+                        if (!dayData.available) {
                             selectedCheckIn = null;
                             selectedCheckOut = null;
+                            updateBookingSummary();
                         } else {
                             dayCell.classList.add('in-range');
                         }
