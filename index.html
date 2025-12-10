@@ -989,11 +989,11 @@
                 const dayPrice = document.createElement('div');
                 dayPrice.className = 'day-price';
                 if (date < today) {
-                    dayPrice.textContent = 'Not Available'
+                    dayPrice.textContent = 'N/A'
                 } else if (isMoreThan3MonthsFromToday(date)) {
-                    dayPrice.textContent = 'Not Available'
+                    dayPrice.textContent = 'N/A'
                 } else if (!dayData.available) {
-                    dayCell.classList.add('booked');
+                    dayPrice.textContent = 'booked'
                 } else {
                     dayPrice.textContent = `${dayData.price}`;
                 }
