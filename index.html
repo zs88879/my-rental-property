@@ -1047,7 +1047,7 @@
                     const date = new Date(selectedCheckIn);
                     date.setDate(date.getDate() + i);
                     const dateStr = formatDate(date);
-                    const dayData = availabilityData[dateStr];
+                    const dayData = availabilityData[dateStr] || checkCustomAvailability(date) || { available: true, price: 299 };
                     
                     if (dayData && dayData.price) {
                         totalPrice += dayData.price;
