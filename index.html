@@ -583,7 +583,9 @@
     </div>
 
     <div class="booking-bar">
+        <!-- 
         <p><span class="price">$299</span> per night</p>
+        -->
         <a href="#contact" class="btn" style="background: white; color: #ff6b6b;">Check Availability</a>
     </div>
 
@@ -986,7 +988,15 @@
                 
                 const dayPrice = document.createElement('div');
                 dayPrice.className = 'day-price';
-                dayPrice.textContent = dayData.available ? `${dayData.price}` : 'Booked';
+                if (date < today) {
+                    dayPrice.textContent = 'Not Available'
+                } else if (isMoreThan3MonthsFromToday(date)) {
+                    dayPrice.textContent = 'Not Available'
+                } else if (!dayData.available) {
+                    dayCell.classList.add('booked');
+                } else {
+                    dayPrice.textContent = `${dayData.price}`;
+                }
                 
                 dayCell.appendChild(dayNumber);
                 dayCell.appendChild(dayPrice);
