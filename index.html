@@ -969,7 +969,7 @@
                 if (selectedCheckIn && selectedCheckOut) {
                     if (date > selectedCheckIn && date < selectedCheckOut) {
                         if (!dayData.available) {
-                            alert(dateStr + "is booked");
+                            alert("booked");
                             selectedCheckIn = null;
                             selectedCheckOut = null;
                             updateBookingSummary();
